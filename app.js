@@ -8,7 +8,7 @@ import {
   MessageComponentTypes,
   verifyKeyMiddleware,
 } from 'discord-interactions';
-import { getRandomEmoji, DiscordRequest } from './utils.js';
+import { getRandomEmoji, DiscordRequest, doSomething } from './utils.js';
 import { getShuffledOptions, getResult } from './game.js';
 
 // Create an express app
@@ -18,11 +18,16 @@ const PORT = process.env.PORT || 3000;
 // To keep track of our active games
 const activeGames = {};
 
+var value = 0;
+
 /**
  * Interactions endpoint URL where Discord will send HTTP requests
  * Parse request body and verifies incoming requests using discord-interactions package
  */
 app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async function (req, res) {
+  if (!req.body) {
+    return res.status(400).json({ error: 'invalid request, no body' });
+  }
   // Interaction id, type and data
   const { id, type, data } = req.body;
 
@@ -50,12 +55,45 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
           components: [
             {
               type: MessageComponentTypes.TEXT_DISPLAY,
-              // Fetches a random emoji to send from a helper function
-              content: `hello world ${getRandomEmoji()}`
+              content: `I am :1413875865930170418:izzbot also ` + doSomething()
             }
           ]
         },
       });
+    }
+
+    //add command
+    if (name === 'add') {
+      return res.send({
+         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          flags: InteractionResponseFlags.IS_COMPONENTS_V2,
+          components: [
+            {
+              type: MessageComponentTypes.TEXT_DISPLAY,
+              // Fetches a random emoji to send from a helper function
+              content: value + " added 1"
+            }
+          ]
+        },
+      });
+      value += 1;
+    }
+    if (name === 'Rickroll') {
+      return res.send({
+         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          flags: InteractionResponseFlags.IS_COMPONENTS_V2,
+          components: [
+            {
+              type: MessageComponentTypes.TEXT_DISPLAY,
+              // Fetches a random emoji to send from a helper function
+              content: ":1413875994254905527:"
+            }
+          ]
+        },
+      })
+      value += 1;
     }
 
     console.error(`unknown command: ${name}`);

@@ -44,6 +44,22 @@ const CHALLENGE_COMMAND = {
   contexts: [0, 2],
 };
 
-const ALL_COMMANDS = [TEST_COMMAND, CHALLENGE_COMMAND];
+const ADD_COMMAND = {
+  name: 'add',
+  description: 'print value and add 1',
+  type: 1,
+  integration_types: [0, 1],
+  contexts: [0, 1, 2],
+}
+
+const EMOJI = {
+  name: 'Rickroll',
+  description: 'whats going on',
+  type: 1,
+  integration_types: [0, 1],
+  contexts: [0, 1, 2],
+}
+
+const ALL_COMMANDS = [TEST_COMMAND, CHALLENGE_COMMAND, ADD_COMMAND, EMOJI];
 
 InstallGlobalCommands(process.env.APP_ID, ALL_COMMANDS);

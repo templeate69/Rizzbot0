@@ -42,6 +42,11 @@ export function getRandomEmoji() {
   return emojiList[Math.floor(Math.random() * emojiList.length)];
 }
 
+export function doSomething() {
+  const messages = ["message","have a cupcake","this is also a message","AI is taking over the world"];
+  return messages[Math.floor(Math.random() * messages.length)];
+}
+
 export function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
