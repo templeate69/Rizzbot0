@@ -8,6 +8,7 @@ import {
   MessageComponentTypes,
   verifyKeyMiddleware,
 } from 'discord-interactions';
+import { ADD_COMMAND, EMOJI_COMMAND } from './commands.js';
 import { getRandomEmoji, DiscordRequest, doSomething } from './utils.js';
 import { getShuffledOptions, getResult } from './game.js';
 
@@ -63,7 +64,7 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
     }
 
     //add command
-    if (name === 'add') {
+    if (name === ADD_COMMAND.name) {
       return res.send({
          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
@@ -79,7 +80,7 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
       });
       value += 1;
     }
-    if (name === 'Rickroll') {
+    if (name === EMOJI_COMMAND.name) {
       return res.send({
          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
