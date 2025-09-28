@@ -21,7 +21,7 @@ const PORT = process.env.PORT || 3000;
 const activeGames = {};
 
 const dataFilePath = '/home/azureuser/data/values.json';
-import userValues from '/home/azureuser/data/values.json';
+import userValues from '/home/azureuser/data/values.json' assert { type: "json" };
 
 function saveUserValues() {
   const data = JSON.stringify(userValues, null, 2);
