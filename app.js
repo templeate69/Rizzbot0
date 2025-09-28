@@ -68,6 +68,8 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
       const userId = context === 0 ? member?.user?.id : user?.id;
       const maybeValueToAdd = data?.options?.at?.(0).value;
       const valueToAdd = Number.isInteger(maybeValueToAdd) ? maybeValueToAdd : 1;
+      var oldValue = value;
+      value += valueToAdd;
       return res.send({
          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
@@ -76,12 +78,11 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
             {
               type: MessageComponentTypes.TEXT_DISPLAY,
               // Fetches a random emoji to send from a helper function
-              content: value + " added " + valueToAdd
+              content: oldValue + " added " + valueToAdd
             }
           ]
         },
       });
-      value += valueToAdd;
     }
     if (name === EMOJI_COMMAND.name) {
       return res.send({
