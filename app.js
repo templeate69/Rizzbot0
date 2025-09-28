@@ -30,7 +30,7 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
     return res.status(400).json({ error: 'invalid request, no body' });
   }
   // Interaction id, type and data
-  const { id, type, data, context, member,  user } = req.body;
+  const { id, type, data, context, member, user } = req.body;
 
   /**
    * Handle verification requests
@@ -65,8 +65,8 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
 
     //add command
     if (name === ADD_COMMAND.name) {
-      const userId = context === 0 ? member.user.id : user.id;
-      const maybeValueToAdd = data.options[0].value;
+      const userId = context === 0 ? member?.user?.id : user?.id;
+      const maybeValueToAdd = data?.options?.at?.(0).value;
       const valueToAdd = Number.isInteger(maybeValueToAdd) ? maybeValueToAdd : 1;
       return res.send({
          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
