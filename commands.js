@@ -50,6 +50,12 @@ export const ADD_COMMAND = {
   type: 1,
   integration_types: [0, 1],
   contexts: [0, 1, 2],
+  options: [{
+    name: 'value',
+    description: 'value to add',
+    type: 4,
+    min_value: 1,
+  }]
 }
 
 export const EMOJI_COMMAND = {

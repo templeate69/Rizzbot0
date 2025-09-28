@@ -30,7 +30,7 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
     return res.status(400).json({ error: 'invalid request, no body' });
   }
   // Interaction id, type and data
-  const { id, type, data } = req.body;
+  const { id, type, data, member,  user } = req.body;
 
   /**
    * Handle verification requests
@@ -65,6 +65,9 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
 
     //add command
     if (name === ADD_COMMAND.name) {
+      const userId = context === 0 ? member.user.id : user.id;
+      const maybeValueToAdd = data.options[0].value;
+      const valueToAdd = Number.isInteger(maybeValueToAdd) ? maybeValueToAdd : 1;
       return res.send({
          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
@@ -73,12 +76,12 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
             {
               type: MessageComponentTypes.TEXT_DISPLAY,
               // Fetches a random emoji to send from a helper function
-              content: value + " added 1"
+              content: value + " added " + valueToAdd
             }
           ]
         },
       });
-      value += 1;
+      value += valueToAdd;
     }
     if (name === EMOJI_COMMAND.name) {
       return res.send({
