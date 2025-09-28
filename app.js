@@ -1,3 +1,4 @@
+import * as fs from 'fs';
 import 'dotenv/config';
 import express from 'express';
 import {
@@ -19,7 +20,15 @@ const PORT = process.env.PORT || 3000;
 // To keep track of our active games
 const activeGames = {};
 
-var value = 0;
+const dataFilePath = '/home/azureuser/data/values.json';
+import userValues from '/home/azureuser/data/values.json';
+
+function saveUserValues() {
+  const data = JSON.stringify(userValues, null, 2);
+  fs.writeFile(dataFilePath, data, (error) => {
+    console.error(error);
+  });
+}
 
 /**
  * Interactions endpoint URL where Discord will send HTTP requests
@@ -66,21 +75,39 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
     //add command
     if (name === ADD_COMMAND.name) {
       const userId = context === 0 ? member?.user?.id : user?.id;
+      if (!userId) {
+        console.error('Command ADD: no user id found in request', JSON.stringify(context), JSON.stringify(member), JSON.stringify(user));
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            flags: InteractionResponseFlags.IS_COMPONENTS_V2,
+            components: [{
+              type: MessageComponentTypes.TEXT_DISPLAY,
+              content: "User is not identified",
+            }],
+          },
+        });
+      }
+
+      if (!(userId in userValues)) {
+        userValues[userId] = 0;
+      }
+      const userValue = userValues[userId];
+      
       const maybeValueToAdd = data?.options?.at?.(0).value;
       const valueToAdd = Number.isInteger(maybeValueToAdd) ? maybeValueToAdd : 1;
-      var oldValue = value;
-      value += valueToAdd;
+
+      userValues[userId] += valueToAdd;
+      saveUserValues();
+
       return res.send({
-         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
           flags: InteractionResponseFlags.IS_COMPONENTS_V2,
-          components: [
-            {
-              type: MessageComponentTypes.TEXT_DISPLAY,
-              // Fetches a random emoji to send from a helper function
-              content: oldValue + " added " + valueToAdd
-            }
-          ]
+          components: [{
+            type: MessageComponentTypes.TEXT_DISPLAY,
+            content: valueToAdd + " was added to " + userValue
+          }],
         },
       });
     }
