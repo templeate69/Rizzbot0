@@ -30,7 +30,7 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
     return res.status(400).json({ error: 'invalid request, no body' });
   }
   // Interaction id, type and data
-  const { id, type, data, member,  user } = req.body;
+  const { id, type, data, context, member,  user } = req.body;
 
   /**
    * Handle verification requests
