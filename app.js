@@ -19,7 +19,7 @@ const PORT = process.env.PORT || 3000;
 // To keep track of our active games
 const activeGames = {};
 
-const dataFilePath = '/home/azureuser/data/values.json';
+import { dataFilePath } from './json_stuff/classified.json' assert { type: "json" };
 import userValues from '/home/azureuser/data/values.json' assert { type: "json" };
 import { assert } from 'console';
 

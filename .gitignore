@@ -1,3 +1,4 @@
 node_modules
 .env
 *.log
+json_stuff/classified.json
