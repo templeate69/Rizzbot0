@@ -1,5 +1,4 @@
 import * as fs from 'fs';
-import 'dotenv/config';
 import express from 'express';
 import {
   ButtonStyleTypes,
@@ -10,8 +9,8 @@ import {
   verifyKeyMiddleware,
 } from 'discord-interactions';
 import { ADD_COMMAND, EMOJI_COMMAND } from './commands.js';
-import { getRandomEmoji, DiscordRequest, doSomething } from './utils.js';
-import { getShuffledOptions, getResult } from './game.js';
+import { DiscordRequest, doSomething,randomInRange,putInBrackets } from './utils.js';
+import { fish_id,fish } from './json_stuff/fish.json' assert { type: "json" };
 
 // Create an express app
 const app = express();
@@ -22,12 +21,23 @@ const activeGames = {};
 
 const dataFilePath = '/home/azureuser/data/values.json';
 import userValues from '/home/azureuser/data/values.json' assert { type: "json" };
+import { assert } from 'console';
 
 function saveUserValues() {
   const data = JSON.stringify(userValues, null, 2);
   fs.writeFile(dataFilePath, data, (error) => {
     console.error(error);
   });
+}
+
+function getRandomFish() {
+  var currentFishId = fish_id[Math.floor(Math.random() * fish_id.length)];
+  return(fish[currentFishId]);
+}
+
+function getFishPrice(fish) {
+  var price = randomInRange(fish.weight.min, fish.weight.max);
+  return(price * fish.price);
 }
 
 /**
@@ -56,7 +66,7 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
     const { name } = data;
 
     // "test" command
-    if (name === 'test') {
+    if (name === 'Test') {
       // Send a message into the channel where command was triggered from
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
@@ -66,6 +76,25 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
             {
               type: MessageComponentTypes.TEXT_DISPLAY,
               content: `I am <rizzbot:1413875865930170418>izzbot also ` + doSomething()
+            }
+          ]
+        },
+      });
+    }
+
+    if (name === 'Fish') {
+      var currentFish = getRandomFish();
+      var fishPrice = getFishPrice(currentFish);
+      var fishMessage = "You caught a " + currentFish.name + putInBrackets(currentFish.rarity) + ", sold for $" + fishPrice + ".";
+      // Send a message into the channel where command was triggered from
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          flags: InteractionResponseFlags.IS_COMPONENTS_V2,
+          components: [
+            {
+              type: MessageComponentTypes.TEXT_DISPLAY,
+              content: fishMessage
             }
           ]
         },
@@ -119,13 +148,11 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
           components: [
             {
               type: MessageComponentTypes.TEXT_DISPLAY,
-              // Fetches a random emoji to send from a helper function
-              content: "<rikroll:1413875994254905527>"
+              content: "Error: Higher rizz required"
             }
           ]
         },
       })
-      value += 1;
     }
 
     console.error(`unknown command: ${name}`);

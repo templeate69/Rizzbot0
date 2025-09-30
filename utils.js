@@ -50,3 +50,11 @@ export function doSomething() {
 export function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
+
+export function randomInRange(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+export function putInBrackets(str) {
+  return "(" + str + ")";
+}

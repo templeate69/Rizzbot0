@@ -19,34 +19,24 @@ function createCommandChoices() {
 
 // Simple test command
 const TEST_COMMAND = {
-  name: 'test',
-  description: 'Basic command',
+  name: 'Test',
+  description: 'Test if Rizzbot works',
   type: 1,
   integration_types: [0, 1],
   contexts: [0, 1, 2],
 };
 
-// Command containing options
-const CHALLENGE_COMMAND = {
-  name: 'challenge',
-  description: 'Challenge to a match of rock paper scissors',
-  options: [
-    {
-      type: 3,
-      name: 'object',
-      description: 'Pick your object',
-      required: true,
-      choices: createCommandChoices(),
-    },
-  ],
+const FISH_COMMAND = {
+  name: 'Fish',
+  description: 'Gambling',
   type: 1,
   integration_types: [0, 1],
-  contexts: [0, 2],
-};
+  contexts: [0, 1, 2],
+}
 
 export const ADD_COMMAND = {
-  name: 'add',
-  description: 'print value and add 1',
+  name: 'Add',
+  description: 'Print value and add 1',
   type: 1,
   integration_types: [0, 1],
   contexts: [0, 1, 2],
@@ -59,13 +49,13 @@ export const ADD_COMMAND = {
 }
 
 export const EMOJI_COMMAND = {
-  name: 'rickroll',
-  description: 'whats going on',
+  name: 'Rickroll',
+  description: 'guess the functionality',
   type: 1,
   integration_types: [0, 1],
   contexts: [0, 1, 2],
 }
 
-const ALL_COMMANDS = [TEST_COMMAND, CHALLENGE_COMMAND, ADD_COMMAND, EMOJI_COMMAND];
+const ALL_COMMANDS = [TEST_COMMAND, CHALLENGE_COMMAND, ADD_COMMAND, EMOJI_COMMAND, FISH_COMMAND];
 
 InstallGlobalCommands(process.env.APP_ID, ALL_COMMANDS);
