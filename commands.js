@@ -19,7 +19,7 @@ function createCommandChoices() {
 
 // Simple test command
 const TEST_COMMAND = {
-  name: 'Test',
+  name: 'test',
   description: 'Test if Rizzbot works',
   type: 1,
   integration_types: [0, 1],
@@ -27,7 +27,7 @@ const TEST_COMMAND = {
 };
 
 const FISH_COMMAND = {
-  name: 'Fish',
+  name: 'fish',
   description: 'Gambling',
   type: 1,
   integration_types: [0, 1],
@@ -35,7 +35,7 @@ const FISH_COMMAND = {
 }
 
 export const ADD_COMMAND = {
-  name: 'Add',
+  name: 'add',
   description: 'Print value and add 1',
   type: 1,
   integration_types: [0, 1],
@@ -49,7 +49,7 @@ export const ADD_COMMAND = {
 }
 
 export const EMOJI_COMMAND = {
-  name: 'Rickroll',
+  name: 'rickroll',
   description: 'guess the functionality',
   type: 1,
   integration_types: [0, 1],

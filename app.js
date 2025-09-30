@@ -66,7 +66,7 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
     const { name } = data;
 
     // "test" command
-    if (name === 'Test') {
+    if (name === 'test') {
       // Send a message into the channel where command was triggered from
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
@@ -82,7 +82,7 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
       });
     }
 
-    if (name === 'Fish') {
+    if (name === 'fish') {
       var currentFish = getRandomFish();
       var fishPrice = getFishPrice(currentFish);
       var fishMessage = "You caught a " + currentFish.name + putInBrackets(currentFish.rarity) + ", sold for $" + fishPrice + ".";
